@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <seal/seal.h>
+#include <iostream>
+#include "./SEAL/seal/bigpoly.h"
 
 int main() {
     // Initialize SEAL context and keys
@@ -16,8 +16,13 @@ int main() {
     auto evaluator = std::make_shared<seal::Evaluator>(context);
 
     // Step 1: Homomorphic Hiding
-    int a = 42; // Example value
-    int b = 28; // Example value
+    int a, b;
+    std::cout << "Enter the value of 'a': ";
+    std::cin >> a;
+
+    std::cout << "Enter the value of 'b': ";
+    std::cin >> b;
+
     int c = a + b;
 
     // Encrypt values a and b
@@ -37,12 +42,12 @@ int main() {
     encryptor->encrypt(plain_c, encrypted_c);
 
     // Compare encrypted sum and encrypted c
-    bool proof_accepted = encrypted_sum.is_ntt_form() && encrypted_sum == encrypted_c;
+    bool proof_accepted = encrypted_sum == encrypted_c;
 
     if (proof_accepted) {
-        printf("Receiver accepts sender's proof.\n");
+        std::cout << "Receiver accepts sender's proof." << std::endl;
     } else {
-        printf("Receiver rejects sender's proof.\n");
+        std::cout << "Receiver rejects sender's proof." << std::endl;
     }
 
     return 0;
